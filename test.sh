@@ -3,6 +3,13 @@
 # Developer: Hyperling
 # Purpose: Create a test user and some test data.
 
+DIR=`dirname $0`
+PROG=`basename $0`
+if [[ $DIR == "." ]]; then
+	DIR="`pwd`"
+	echo $DIR/$PROG
+fi
+
 ## Create User ##
 
 # curl POST test_user test_password etc etc

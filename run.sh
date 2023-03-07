@@ -3,6 +3,13 @@
 # Developer: Hyperling
 # Purpose: Install all dependencies and run the project.
 
+DIR=`dirname $0`
+PROG=`basename $0`
+if [[ $DIR == "." ]]; then
+	DIR="`pwd`"
+	echo $DIR/$PROG
+fi
+
 ## Install any system packages. ##
 if [[ -z `which npm` ]]; then
 	echo "NPM needs to be installed."
@@ -20,8 +27,8 @@ fi
 
 ## Install/update any project modules. ##
 echo "Refreshing NPM packages."
-bash -c "rm -r node_modules package-lock.json"
-npm install package.json
+bash -c "rm -r $DIR/node_modules $DIR/package-lock.json"
+npm install $DIR
 
 ## Main ##
 
@@ -29,11 +36,11 @@ npm install package.json
 
 if [[ $parent ]]; then
 	# Start backend
-	node `pwd`/server.js >server.log 2>&1 &
+	node $DIR/server.js >$DIR/logs/server.log 2>&1 &
 else
 	# Start frontend.
-	tsc index.tsx
-	# ??? `pwd`/dist/index.js >ui.log 2>&1
+	tsc --project $DIR
+	# ??? $DIR/dist/index.js >$DIR/logs/ui.log 2>&1
 fi
 
-# Or just run them each with & and then kill with another shell script?
+# Or just run them each with & and then kill with another shell script? stop.sh

@@ -1,0 +1,22 @@
+{
+  "name": "food_diary",
+  "version": "1.0.0",
+  "description": "Food Diary UI for researching dietary sensitivities.",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperling/food_diary.git"
+  },
+  "author": "Hyperling",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hyperling/food_diary/issues"
+  },
+  "homepage": "https://github.com/Hyperling/food_diary#readme",
+  "dependencies": {
+    "package.json": "^2.0.1"
+  }
+}

@@ -23,6 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # my additions
-package-lock.json
 logs
 dist

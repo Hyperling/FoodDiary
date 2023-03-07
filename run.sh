@@ -26,6 +26,20 @@ else
 fi
 
 ## Install/update any project modules. ##
+if [[ `pwd` != $DIR && -e package.json ]]; then
+	cat <<- EOF
+		WARNING: It seems you are currently in a different JS project which already 
+		 has a package.json. Cannot guarantee safety of installing $DIR. Please
+		 make sure you understand what you're doing before continuing.
+	EOF
+	printf "Would you like to continue? [N/y]: "
+	typeset -u continue
+	read continue
+	if [[ $continue != Y* ]]; then
+		echo "Good choice, exiting application."
+		exit 1
+	fi
+fi
 echo "Refreshing NPM packages."
 bash -c "rm -r $DIR/node_modules $DIR/package-lock.json"
 npm install $DIR

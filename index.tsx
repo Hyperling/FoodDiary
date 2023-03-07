@@ -7,17 +7,8 @@
 //  https://blog.logrocket.com/how-use-typescript-react-tutorial-examples/
 */
 
-// Attach all the needed helperss.
+// Attach all the needed helpers.
 import "src/includes.ts";
-
-/* DB Setup */
-
-
-
-/* Test Code */
-// Just playing with the DB until learning React.
-
-
 
 /* Main, UI */
 

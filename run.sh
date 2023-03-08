@@ -11,21 +11,17 @@ if [[ $DIR == "." ]]; then
 fi
 
 ## Install any system packages. ##
-if [[ -z `which npm` ]]; then
-	echo "NPM needs to be installed."
-	sudo apt install npm
-else
-	echo "NPM is already available."
-fi
 
-if [[ -z `which tsc` ]]; then
-	echo "TSC needs to be installed."
-	sudo apt install node-typescript
+if [[ -z `which npm` || -z `which tsc` || -z `which sqlite` ]]; then
+	echo "A dependency is missing, going through install process."
+	sudo apt install npm node-typescript sqlite
 else
-	echo "TSC is already available."
+	echo "All packages are available."
 fi
 
 ## Install/update any project modules. ##
+
+# Ensure it is safe to be running an npm nstall.
 if [[ `pwd` != $DIR && -e package.json ]]; then
 	cat <<- EOF
 		WARNING: It seems you are currently in a different JS project which already 
@@ -40,21 +36,32 @@ if [[ `pwd` != $DIR && -e package.json ]]; then
 		exit 1
 	fi
 fi
+
+# Use package.json in project directory to evaluate if any modules need added.
 echo "Refreshing NPM packages."
-bash -c "rm -r $DIR/node_modules $DIR/package-lock.json"
 npm install $DIR
 
 ## Main ##
 
-# Fork somehow other than just doing &? Then...
+# Start backend in a forked process
+echo "Starting back-end in a child process and sleeping for 5 seconds."
+mkdir -p $DIR/db
+node $DIR/dist/server.js "$DIR" >>$DIR/logs/server.log 2>&1 &
+sleep 5
 
-if [[ $parent ]]; then
-	# Start backend
-	node $DIR/server.js >$DIR/logs/server.log 2>&1 &
-else
-	# Start frontend.
-	tsc --project $DIR
-	# ??? $DIR/dist/index.js >$DIR/logs/ui.log 2>&1
-fi
+# Start frontend.
+touch $DIR/dist &&
+sh -c "rm -rv $DIR/dist" &&
+tsc --project $DIR &&
+ls -l $DIR/dist &&
+# ??? $DIR/dist/index.js >$DIR/logs/ui.log 2>&1
+echo "Started front-end successfully!" || 
+echo "Failed to start front-end."
+echo "Front-end service has stopped."
 
-# Or just run them each with & and then kill with another shell script? stop.sh
+## Finish ##
+
+# If we've reached this point then the front-end has been terminated and the
+#  back-end needs to be stopped as well. use the helper script to do it
+echo "Finishing the back-end as well."
+$DIR/stop.sh

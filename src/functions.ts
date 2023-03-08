@@ -6,17 +6,12 @@
 
 import "objects.ts";
 
-// Connect to a SQLite database.
-function connect_db () {
-
-}
-
 // Retrieve data from a connected database.
 function select_db () {
-	
+	null;
 }
 
 // Send data to a connected database.
 function post_db () {
-
+	null;
 }

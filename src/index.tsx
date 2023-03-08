@@ -8,8 +8,6 @@
 */
 
 // Attach all the needed helpers.
-import "src/includes.ts";
+import "includes.ts";
 
 /* Main, UI */
-
-

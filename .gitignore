@@ -25,3 +25,4 @@ yarn-error.log*
 # my additions
 logs
 dist
+db

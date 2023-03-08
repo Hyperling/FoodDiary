@@ -44,16 +44,25 @@ async function main() {
 	console.log("Connecting to DB "+DIR+"/db/main");
 	let db = await new sqlite3.Database(DIR+"/db/main");
 	console.log(db);
-	await db.run(`
-		CREATE TABLE journal(
-			user_id				INTEGER NOT NULL,
-			cal_date 			TEXT NOT NULL,
-			meal 					TEXT NOT NULL,
-			food 					TEXT NOT NULL,
-			caused_issue 	INTEGER NOT NULL,
-			comments 			TEXT
-		) STRICT
-	`);
+	try {
+		await db.run(`
+			CREATE TABLE journal (
+				user_id				INTEGER NOT NULL,
+				cal_date 			TEXT NOT NULL,
+				meal 					TEXT NOT NULL,
+				food 					TEXT NOT NULL,
+				caused_issue 	INTEGER NOT NULL,
+				comments 			TEXT
+			) STRICT
+		`);
+	} catch (e) {
+		console.log("Table not created.")
+	} finally {
+		let r = await db.get(`
+			SELECT count(*) FROM journal
+		`);
+		console.log(r);
+	}
 }
 
 main();

@@ -25,4 +25,6 @@ yarn-error.log*
 # my additions
 logs
 dist
-db
+db/main
+*deleteme*
+*fortesting*

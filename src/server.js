@@ -45,24 +45,13 @@ async function main() {
 	let db = await new sqlite3.Database(DIR+"/db/main");
 	console.log(db);
 	try {
-		await db.run(`
-			CREATE TABLE journal (
-				user_id				INTEGER NOT NULL,
-				cal_date 			TEXT NOT NULL,
-				meal 					TEXT NOT NULL,
-				food 					TEXT NOT NULL,
-				caused_issue 	INTEGER NOT NULL,
-				comments 			TEXT
-			) STRICT
-		`);
-	} catch (e) {
-		console.log("Table not created.")
-	} finally {
-		let r = await db.get(`
+		let r = await db.run(`
 			SELECT count(*) FROM journal
 		`);
-		console.log(r);
+	} catch (e) {
+		console.log("ERROR: The journal table could not be selected ", e);
 	}
+	console.log("The journal table current contains", r, " records.")
 }
 
 main();

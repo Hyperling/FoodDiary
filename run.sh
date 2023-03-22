@@ -43,17 +43,30 @@ npm install $DIR
 
 ## Main ##
 
-# Start backend in a forked process
+# Create any non-git directories.
+mkdir -p $DIR/logs
+
+# Ensure all DB patches are applied.
+bash $DIR/setup_db.sh
+
+# Compile the Javascript portion of the application.
+echo "Compiling..."
+touch $DIR/dist &&
+sh -c "rm -rv $DIR/dist" &&
+tsc --project $DIR &&
+ls -l $DIR/dist &&
+echo "Success!" || {
+	echo "ERROR: Failed to compile."
+	exit 1
+}
+
+# Start backend in a forked process.
 echo "Starting back-end in a child process and sleeping for 5 seconds."
 mkdir -p $DIR/db
 node $DIR/dist/server.js "$DIR" >>$DIR/logs/server.log 2>&1 &
 sleep 5
 
 # Start frontend.
-touch $DIR/dist &&
-sh -c "rm -rv $DIR/dist" &&
-tsc --project $DIR &&
-ls -l $DIR/dist &&
 # ??? $DIR/dist/index.js >$DIR/logs/ui.log 2>&1
 echo "Started front-end successfully!" || 
 echo "Failed to start front-end."

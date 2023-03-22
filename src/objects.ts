@@ -9,6 +9,6 @@ interface record {
 	cal_date: string;
 	meal: string; // Only wants options: Breakfast, Lunch, Dinner, Snack.
 	food: string;
-	caused_issue: boolean;
+	caused_issue: boolean; // 0 for true and 1 for false like Shell?
 	comments: string;
 }
